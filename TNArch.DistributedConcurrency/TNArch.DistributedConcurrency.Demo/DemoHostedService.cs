@@ -12,7 +12,6 @@ namespace TNArch.DistributedConcurrency.Demo
         {
             _concurrencyLockService = concurrencyLockService;
             _logger = logger;
-            _random = new Random();
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
