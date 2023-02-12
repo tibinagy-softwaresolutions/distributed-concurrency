@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 using TNArch.DistributedConcurrency.Core;
 
 namespace TNArch.DistributedConcurrency.Demo
@@ -9,7 +8,6 @@ namespace TNArch.DistributedConcurrency.Demo
     {
         private readonly IConcurrencyLockService _concurrencyLockService;
         private readonly ILogger<DemoHostedService> _logger;
-        private readonly Random _random;
         public DemoHostedService(IConcurrencyLockService concurrencyLockService, ILogger<DemoHostedService> logger)
         {
             _concurrencyLockService = concurrencyLockService;
@@ -32,6 +30,9 @@ namespace TNArch.DistributedConcurrency.Demo
 
         public async Task DeactivateItem(Guid itemId)
         {
+            //Read open orders with the given item
+            //If there are open orders, end the execution
+
             var lockKey = $"LockNoOrderWithInactivetem|{itemId:N}";
 
             var unlockKey = $"DeactivateItem|{itemId:N}";
@@ -50,6 +51,9 @@ namespace TNArch.DistributedConcurrency.Demo
 
         public async Task PurchaseItem(Guid itemId)
         {
+            //Read the item from DB
+            //If the item is deactivated, end the execution
+
             var lockKey = $"LockNoOrderWithInactivetem|{itemId:N}";
 
             var unlockKey = $"PurchaseItem|{itemId:N}";
